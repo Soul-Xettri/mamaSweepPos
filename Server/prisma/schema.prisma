@@ -12,20 +12,21 @@ datasource db {
 }
 
 model user {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(EMPLOYEE)
-  gameType  GameType
-  hashRt    String
-  verified  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String   @id @default(uuid())
+  name              String
+  email             String   @unique
+  password          String
+  role              Role     @default(EMPLOYEE)
+  hashRt            String?
+  addedBy           String?
+  updatedBy         String?
+  password_reset    Boolean  @default(false)
+  disabled_by_admin Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 enum Role {
-  SUPERADMIN
   ADMIN
   EMPLOYEE
 }
