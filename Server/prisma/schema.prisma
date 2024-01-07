@@ -11,6 +11,7 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
+// User model
 model user {
   id                String   @id @default(uuid())
   name              String
@@ -24,6 +25,58 @@ model user {
   disabled_by_admin Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  shift             shift[]
+
+  @@map("user")
+}
+
+// Player model
+model Player {
+  id           String        @id @default(uuid())
+  name         String
+  facebookName String
+  image        String?
+  note         String?
+  addedBy      String?
+  updatedBy    String?
+  Transaction  Transaction[]
+}
+
+// Shift model
+model shift {
+  id         String   @id @default(uuid())
+  startTime  DateTime
+  endTime    DateTime
+  employee   user     @relation(fields: [employeeId], references: [id])
+  employeeId String
+
+  @@index([employeeId])
+}
+
+// Game model
+model Game {
+  id          String        @id @default(uuid())
+  iGN         String
+  name        GameType
+  Transaction Transaction[]
+
+  @@index([iGN])
+}
+
+model Transaction {
+  id        String          @id @default(uuid())
+  amount    Float
+  timeStamp DateTime
+  player    Player          @relation(fields: [playerId], references: [id])
+  playerId  String
+  type      TransactionType
+  game      Game            @relation(fields: [gameId], references: [id])
+  gameId    String
+}
+
+enum TransactionType {
+  DEPOSIT
+  CASHOUT
 }
 
 enum Role {
