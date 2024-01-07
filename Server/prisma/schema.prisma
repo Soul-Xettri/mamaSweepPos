@@ -66,6 +66,9 @@ model Game {
 model Transaction {
   id        String          @id @default(uuid())
   amount    Float
+  bonus     Int?
+  tip       Int?
+  total     Float
   timeStamp DateTime
   player    Player          @relation(fields: [playerId], references: [id])
   playerId  String
@@ -76,6 +79,7 @@ model Transaction {
 
 enum TransactionType {
   DEPOSIT
+  FREEPLAY
   CASHOUT
 }
 
