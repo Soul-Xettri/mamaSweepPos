@@ -6,6 +6,7 @@ import { AtGuard } from './common/guards/at.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserCheckGuard } from './common/guards';
 import { ConfigModule } from '@nestjs/config';
+import { ShiftModule } from './shift/shift.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true, // no need to import into other modules
     }),
     AuthModule,
+    ShiftModule,
   ],
   providers: [
     {

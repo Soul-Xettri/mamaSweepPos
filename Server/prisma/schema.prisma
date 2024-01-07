@@ -45,8 +45,8 @@ model Player {
 // Shift model
 model shift {
   id         String   @id @default(uuid())
-  startTime  DateTime
-  endTime    DateTime
+  startTime  String?
+  endTime    String?
   employee   user     @relation(fields: [employeeId], references: [id])
   employeeId String
 
