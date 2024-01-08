@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserCheckGuard } from './common/guards';
 import { ConfigModule } from '@nestjs/config';
 import { ShiftModule } from './shift/shift.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ShiftModule } from './shift/shift.module';
     }),
     AuthModule,
     ShiftModule,
+    PlayerModule,
   ],
   providers: [
     {
