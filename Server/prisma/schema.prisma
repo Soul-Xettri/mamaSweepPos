@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "foreignKeys"
 }
@@ -32,55 +32,53 @@ model user {
 
 // Player model
 model Player {
-  id          String  @id @default(uuid())
+  id          String        @id @default(uuid())
   name        String
-  facebookURL String  @unique
+  facebookURL String        @unique
   image       String?
   note        String?
+  Game        Game[]
+  Transaction Transaction[]
   addedBy     String?
   updatedBy   String?
-  Game        Game[]
+}
+
+model Game {
+  id       String   @id @default(uuid())
+  iGN      String
+  type     GameType
+  Player   Player?  @relation(fields: [playerId], references: [id])
+  playerId String?
 }
 
 // Shift model
 model shift {
-  id         String  @id @default(uuid())
-  startTime  String?
-  endTime    String?
-  employee   user    @relation(fields: [employeeId], references: [id])
-  employeeId String
+  id          String        @id @default(uuid())
+  startTime   String?
+  endTime     String?
+  employee    user          @relation(fields: [employeeId], references: [id])
+  employeeId  String
+  Transaction Transaction[]
 
   @@index([employeeId])
 }
 
-// Game model
-model Game {
-  id          String        @id @default(uuid())
-  iGN         String
-  gameName    GameType
-  Transaction Transaction[]
-  Player      Player?       @relation(fields: [playerId], references: [id])
-  playerId    String?
-
-  @@index([iGN])
-}
-
 model Transaction {
   id        String          @id @default(uuid())
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  amount    Float
-  bonus     Int?
-  tip       Int?
-  total     Float
-  timeStamp DateTime
+  amount    Int
+  bonus     Int @default(0)
+  tip       Int @default(0)
+  total     Int
+  timeStamp String
   type      TransactionType
-  game      Game            @relation(fields: [gameId], references: [id])
-  gameId    String
+  Player    Player?         @relation(fields: [playerId], references: [id])
+  playerId  String?
+  shift     shift?          @relation(fields: [shiftId], references: [id])
+  shiftId   String?
 }
 
 enum TransactionType {
-  DEPOSIT
+  CASHIN
   FREEPLAY
   CASHOUT
 }
