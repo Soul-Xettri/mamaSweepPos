@@ -8,6 +8,7 @@ import { UserCheckGuard } from './common/guards';
 import { ConfigModule } from '@nestjs/config';
 import { ShiftModule } from './shift/shift.module';
 import { PlayerModule } from './player/player.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PlayerModule } from './player/player.module';
     AuthModule,
     ShiftModule,
     PlayerModule,
+    ReportModule,
   ],
   providers: [
     {
