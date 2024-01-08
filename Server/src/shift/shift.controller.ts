@@ -1,8 +1,9 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ShiftService } from './shift.service';
 import { GetCurrentUserId, Roles } from 'src/common/decorators';
 import { Role } from '@prisma/client';
 import { RoleGuard } from 'src/common/guards';
+import { TransactionDTO } from './dto/shift.dto';
 
 @Controller('shift')
 export class ShiftController {
@@ -28,5 +29,14 @@ export class ShiftController {
   @Get('current')
   getCurrentShift(@GetCurrentUserId() userId: string) {
     return this.shiftService.getCurrentShift(userId);
+  }
+
+  @Post(':shiftId')
+  cashInOut(
+    @Param('shiftId') shiftId: string,
+    @GetCurrentUserId() userId: string,
+   @Body()dto:TransactionDTO
+  ) {
+    return this.shiftService.cashInOut(userId, shiftId, dto);
   }
 }

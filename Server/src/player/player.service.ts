@@ -26,16 +26,16 @@ export class PlayerService {
         image: dto.image,
         note: dto.note,
         addedBy: userId,
-        Game: {
-          create: {
-            gameName: dto.gameName,
+        Game:{
+          create:{
             iGN: dto.iGN,
-          },
-        },
+            type:dto.gameName,
+          }
+        }
       },
-      include: {
-        Game: true,
-      },
+      include:{
+        Game:true,
+      }
     });
     return player;
   }
@@ -43,11 +43,8 @@ export class PlayerService {
   async getAllPlayers() {
     return await this.prisma.player.findMany({
       include: {
-        Game: {
-          include: {
-            Transaction: true,
-          },
-        },
+        Transaction: true,
+        Game:true,
       },
     });
   }
@@ -58,11 +55,8 @@ export class PlayerService {
         id,
       },
       include: {
-        Game: {
-          include: {
-            Transaction: true,
-          },
-        },
+        Transaction: true,
+        Game:true,
       },
     });
     if (!player) {

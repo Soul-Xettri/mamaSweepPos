@@ -3,7 +3,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { TransactionType } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { TransactionDTO } from './dto/shift.dto';
 
 @Injectable()
 export class ShiftService {
@@ -46,6 +48,7 @@ export class ShiftService {
         data: {
           shiftId: shift.id,
           openingTime: shift.startTime,
+          employeeName: employee.name,
         },
       };
     }
@@ -73,6 +76,7 @@ export class ShiftService {
       data: {
         shiftId: newShift.id,
         openingTime: newShift.startTime,
+        employeeName: employee.name,
       },
     };
   }
@@ -127,6 +131,11 @@ export class ShiftService {
 
   async getAllShifts() {
     return await this.prisma.shift.findMany({
+      where: {
+        endTime: {
+          not: null,
+        },
+      },
       orderBy: {
         startTime: 'desc',
       },
@@ -143,16 +152,112 @@ export class ShiftService {
 
   async getCurrentShift(userId: string) {
     const shift = await this.prisma.shift.findFirst({
-        where:{
-            employeeId: userId,
-            endTime: null,
-        },
-        orderBy: {
-            startTime: 'desc',
+      where: {
+        employeeId: userId,
+        endTime: null,
+      },
+      orderBy: {
+        startTime: 'desc',
+      },
+    });
+    if (!shift) {
+      throw new NotFoundException('You have no open shift currently');
+    }
+    return shift;
+  }
+
+  async cashInOut(
+    userId: string,
+    shiftId: string,
+    dto: TransactionDTO,
+  ) {
+    const shift = await this.prisma.shift.findFirst({
+      where: {
+        id: shiftId,
+        employeeId: userId,
+        endTime: null,
+      },
+    });
+    if (!shift) {
+      throw new NotFoundException('You have no open shift currently');
+    }
+    const findPlayer = await this.prisma.player.findFirst({
+      where:{
+        id: dto.playerId,
+      }
+    });
+    if (!findPlayer) {
+      throw new NotFoundException('Player not found');
+    }
+    const findGame = await this.prisma.game.findFirst({
+      where:{
+        id: dto.gameId,
+      }
+    });
+    if(!findGame){
+      throw new NotFoundException('Game not found');
+    }
+    const transaction = await this.prisma.shift.update({
+      where: {
+        id: shiftId,
+      },
+      data: {
+        Transaction: {
+          create: {
+            type: dto.transactionType,
+            amount: dto.amount,
+            bonus: dto.bonus,
+            tip: dto.tip,
+            total: dto.total,
+            timeStamp: new Date().toLocaleString(),
+            Player: {
+              connect: {
+                id: dto.playerId,
+                Game: {
+                  some: {
+                    id: dto.gameId,
+                  },
+                },
+              },
+            },
           },
-    })
-    if(!shift){
-        throw new NotFoundException("You have no open shift currently")
+        },
+      },
+      include: {
+        Transaction: {
+          include: {
+            Player: {
+              include: {
+                Game: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return transaction;
+  }
+
+  async getCurrentShiftTransactions(userId: string) {
+    const shift = await this.prisma.shift.findFirst({
+      where: {
+        employeeId: userId,
+        endTime: null,
+      },
+      include:{
+        Transaction: {
+          include:{
+            Player: {
+              include:{
+                Game: true,
+              }
+            }
+          }
+        }
+      }
+    });
+    if (!shift) {
+      throw new NotFoundException('You have no open shift currently');
     }
     return shift;
   }

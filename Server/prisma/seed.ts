@@ -15,6 +15,7 @@ async function main() {
       updatedBy:"serverHead"
     },
   });
+  console.log("superAdmin created");
 }
 main()
   .then(async () => {
