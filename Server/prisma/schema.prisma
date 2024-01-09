@@ -65,19 +65,32 @@ model shift {
 }
 
 model CashManagement {
-  id           String      @id @default(uuid())
-  Shift        shift       @relation(fields: [shiftId], references: [id])
-  shiftId      String
-  FireKirin    FireKirin?  @relation(fields: [fireKirinId], references: [id])
-  fireKirinId  String?
-  OrionStars   OrionStars? @relation(fields: [orionStarsId], references: [id])
-  orionStarsId String?
+  id            String       @id @default(uuid())
+  Shift         shift        @relation(fields: [shiftId], references: [id])
+  shiftId       String       @unique
+  FireKirin     FireKirin?   @relation(fields: [fireKirinId], references: [id])
+  fireKirinId   String?
+  OrionStars    OrionStars?  @relation(fields: [orionStarsId], references: [id])
+  orionStarsId  String?
+  GameVault     GameVault?   @relation(fields: [gameVaultId], references: [id])
+  gameVaultId   String?
+  PandaMaster   PandaMaster? @relation(fields: [pandaMasterId], references: [id])
+  pandaMasterId String?
+  UltraPanda    UltraPanda?  @relation(fields: [ultraPandaId], references: [id])
+  ultraPandaId  String?
+  VbLink        VbLink?      @relation(fields: [vbLinkId], references: [id])
+  vbLinkId      String?
+  MilkyWay      MilkyWay?    @relation(fields: [milkyWayId], references: [id])
+  milkyWayId    String?
+  Juwa          Juwa?        @relation(fields: [juwaId], references: [id])
+  juwaId        String?
 }
 
 model FireKirin {
   id             String           @id @default(uuid())
   openingAmount  Int              @default(0)
   closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
   CashManagement CashManagement[]
   Transaction    Transaction[]
 }
@@ -86,6 +99,61 @@ model OrionStars {
   id             String           @id @default(uuid())
   openingAmount  Int              @default(0)
   closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model GameVault {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model PandaMaster {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model UltraPanda {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model VbLink {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model MilkyWay {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model Juwa {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  expectedAmount Int              @default(0)
   CashManagement CashManagement[]
   Transaction    Transaction[]
 }
@@ -97,6 +165,7 @@ model Transaction {
   tip             Int             @default(0)
   totalAmount     Int             @default(0)
   TransactionType TransactionType
+  TransactionFor  GameType
   note            String?
   BillImage       BillImage[]
   FireKirin       FireKirin?      @relation(fields: [fireKirinId], references: [id])
@@ -105,6 +174,20 @@ model Transaction {
   orionStarsId    String?
   Player          Player?         @relation(fields: [playerId], references: [id])
   playerId        String?
+  createdBy       String?
+  createdAt       DateTime        @default(now())
+  GameVault       GameVault?      @relation(fields: [gameVaultId], references: [id])
+  gameVaultId     String?
+  PandaMaster     PandaMaster?    @relation(fields: [pandaMasterId], references: [id])
+  pandaMasterId   String?
+  UltraPanda      UltraPanda?     @relation(fields: [ultraPandaId], references: [id])
+  ultraPandaId    String?
+  VbLink          VbLink?         @relation(fields: [vbLinkId], references: [id])
+  vbLinkId        String?
+  MilkyWay        MilkyWay?       @relation(fields: [milkyWayId], references: [id])
+  milkyWayId      String?
+  Juwa            Juwa?           @relation(fields: [juwaId], references: [id])
+  juwaId          String?
 }
 
 model BillImage {
@@ -124,4 +207,15 @@ enum TransactionType {
 enum Role {
   ADMIN
   EMPLOYEE
+}
+
+enum GameType {
+  FIRE_KIRIN
+  ORION_STARS
+  GAME_VAULT
+  PANDA_MASTER
+  ULTRA_PANDA
+  VB_LINK
+  MILKY_WAY
+  JUWA
 }
