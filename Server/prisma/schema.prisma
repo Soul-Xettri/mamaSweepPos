@@ -34,67 +34,94 @@ model user {
 model Player {
   id          String        @id @default(uuid())
   name        String
+  iGN         String
   facebookURL String        @unique
   image       String?
   note        String?
-  Game        Game[]
-  Transaction Transaction[]
+  fireKirin   Boolean       @default(false)
+  orionStars  Boolean       @default(false)
+  gameVault   Boolean       @default(false)
+  pandaMaster Boolean       @default(false)
+  ultraPanda  Boolean       @default(false)
+  vbLink      Boolean       @default(false)
+  milkyWay    Boolean       @default(false)
+  juwa        Boolean       @default(false)
   addedBy     String?
   updatedBy   String?
-}
-
-model Game {
-  id       String   @id @default(uuid())
-  iGN      String
-  type     GameType
-  Player   Player?  @relation(fields: [playerId], references: [id])
-  playerId String?
+  Transaction Transaction[]
+  createdAt   DateTime      @default(now())
 }
 
 // Shift model
 model shift {
-  id          String        @id @default(uuid())
-  startTime   String?
-  endTime     String?
-  employee    user          @relation(fields: [employeeId], references: [id])
-  employeeId  String
-  Transaction Transaction[]
+  id             String           @id @default(uuid())
+  startTime      String?
+  endTime        String?
+  Employee       user             @relation(fields: [employeeId], references: [id])
+  employeeId     String
+  CashManagement CashManagement[]
 
   @@index([employeeId])
 }
 
+model CashManagement {
+  id           String      @id @default(uuid())
+  Shift        shift       @relation(fields: [shiftId], references: [id])
+  shiftId      String
+  FireKirin    FireKirin?  @relation(fields: [fireKirinId], references: [id])
+  fireKirinId  String?
+  OrionStars   OrionStars? @relation(fields: [orionStarsId], references: [id])
+  orionStarsId String?
+}
+
+model FireKirin {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
+model OrionStars {
+  id             String           @id @default(uuid())
+  openingAmount  Int              @default(0)
+  closingAmount  Int              @default(0)
+  CashManagement CashManagement[]
+  Transaction    Transaction[]
+}
+
 model Transaction {
-  id        String          @id @default(uuid())
-  amount    Int
-  bonus     Int @default(0)
-  tip       Int @default(0)
-  total     Int
-  timeStamp String
-  type      TransactionType
-  Player    Player?         @relation(fields: [playerId], references: [id])
-  playerId  String?
-  shift     shift?          @relation(fields: [shiftId], references: [id])
-  shiftId   String?
+  id              String          @id @default(uuid())
+  amount          Int             @default(0)
+  bonus           Int             @default(0)
+  tip             Int             @default(0)
+  totalAmount     Int             @default(0)
+  TransactionType TransactionType
+  note            String?
+  BillImage       BillImage[]
+  FireKirin       FireKirin?      @relation(fields: [fireKirinId], references: [id])
+  fireKirinId     String?
+  OrionStars      OrionStars?     @relation(fields: [orionStarsId], references: [id])
+  orionStarsId    String?
+  Player          Player?         @relation(fields: [playerId], references: [id])
+  playerId        String?
+}
+
+model BillImage {
+  id    String @id @default(uuid())
+  image String
+
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId String?
 }
 
 enum TransactionType {
-  CASHIN
-  FREEPLAY
-  CASHOUT
+  CASH_IN
+  FREE_PLAY
+  CASH_OUT
 }
 
 enum Role {
   ADMIN
   EMPLOYEE
-}
-
-enum GameType {
-  FIREKIRIN
-  ORIONSTARS
-  GAMEVAULT
-  PANDAMASTER
-  ULTRAPANDA
-  VBLINK
-  MILKYWAY
-  JUWA
 }

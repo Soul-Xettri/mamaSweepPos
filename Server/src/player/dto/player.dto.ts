@@ -1,4 +1,3 @@
-import { GameType } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class PlayerDto {
@@ -15,12 +14,31 @@ export class PlayerDto {
   @IsOptional()
   @IsString()
   note: string;
-  
-  @IsNotEmpty()
-  @IsEnum(GameType, { each: true })
-  gameName: GameType;
-
 
   @IsString()
   iGN: string;
+
+  @IsOptional()
+  fireKirin: boolean;
+
+  @IsOptional()
+  orionStars: boolean;
+
+  @IsOptional()
+  gameVault: boolean;
+
+  @IsOptional()
+  pandaMaster: boolean;
+
+  @IsOptional()
+  ultraPanda: boolean;
+
+  @IsOptional()
+  vbLink: boolean;
+
+  @IsOptional()
+  milkyWay: boolean;
+
+  @IsOptional()
+  juwa: boolean;
 }

@@ -1,7 +1,16 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ChangeRoleDTO, ResetPasswordDTO, SignInDto, SignUpDto } from './dto/auth.dto';
+import {
+  ChangeRoleDTO,
+  ResetPasswordDTO,
+  SignInDto,
+  SignUpDto,
+} from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
 import { Tokens } from './types';
@@ -14,8 +23,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createEmployee(userId:string,dto: SignUpDto) {
+  async createEmployee(userId: string, dto: SignUpDto) {
     try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) {
+        throw new ForbiddenException('Please Login again');
+      }
       const hash = await this.hashData(dto.password);
       const newEmployee = await this.prisma.user.create({
         data: {
@@ -81,7 +98,7 @@ export class AuthService {
     });
   }
 
-  async resetPassword(userId:string,dto: ResetPasswordDTO) {
+  async resetPassword(userId: string, dto: ResetPasswordDTO) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -95,7 +112,7 @@ export class AuthService {
         'Could not send email. Please contact admin',
       );
     }
-    if(user.role===Role.ADMIN){
+    if (user.role === Role.ADMIN) {
       throw new ForbiddenException('Admin password cannot be reset like this');
     }
     const plainPassword = Math.random().toString(36).substring(2, 10);
@@ -107,7 +124,7 @@ export class AuthService {
       data: {
         password: pwd,
         password_reset: true,
-        updatedBy:userId,
+        updatedBy: userId,
       },
     });
     return { success: true, newPassword: plainPassword };
@@ -128,7 +145,7 @@ export class AuthService {
     return 'Logged out';
   }
 
-  async changeRole(userId:string,role: ChangeRoleDTO) {
+  async changeRole(userId: string, role: ChangeRoleDTO) {
     const userExist = await this.prisma.user.findFirst({
       where: {
         id: role.userId,
@@ -137,7 +154,7 @@ export class AuthService {
     if (!userExist) {
       throw new NotFoundException('User not found');
     }
-    if(userExist.role ===Role.ADMIN){
+    if (userExist.role === Role.ADMIN) {
       throw new ForbiddenException('Admin role cannot be changed like this');
     }
     await this.prisma.user.update({
@@ -146,7 +163,7 @@ export class AuthService {
       },
       data: {
         role: role.role,
-        updatedBy:userId,
+        updatedBy: userId,
       },
     });
     return { success: true };
@@ -164,11 +181,7 @@ export class AuthService {
     const rtMatches = await bcrypt.compare(rt, user.hashRt);
     if (!rtMatches) throw new ForbiddenException('Access denied');
 
-    const tokens = await this.signToken(
-      user.id,
-      user.email,
-      user.role,
-    );
+    const tokens = await this.signToken(user.id, user.email, user.role);
     await this.updateRtHash(user.id, tokens.refresh_token);
     return tokens;
   }

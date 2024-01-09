@@ -3,15 +3,15 @@ import { ShiftService } from './shift.service';
 import { GetCurrentUserId, Roles } from 'src/common/decorators';
 import { Role } from '@prisma/client';
 import { RoleGuard } from 'src/common/guards';
-import { TransactionDTO } from './dto/shift.dto';
+import { ShiftDTO, TransactionDTO } from './dto/shift.dto';
 
 @Controller('shift')
 export class ShiftController {
   constructor(private readonly shiftService: ShiftService) {}
 
   @Post('shift-in')
-  openShift(@GetCurrentUserId() userId: string) {
-    return this.shiftService.openShift(userId);
+  openShift(@GetCurrentUserId() userId: string, @Body() dto: ShiftDTO) {
+    return this.shiftService.openShift(userId, dto);
   }
 
   @Post('shift-out')

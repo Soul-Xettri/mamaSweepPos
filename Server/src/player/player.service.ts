@@ -11,6 +11,14 @@ export class PlayerService {
   constructor(private prisma: PrismaService) {}
 
   async addPlayer(userId: string, dto: PlayerDto) {
+    const user = await this.prisma.user.findUnique({
+      where:{
+        id:userId
+      },
+    })
+    if(!user){
+      throw new ForbiddenException('Please Login again');
+    }
     const check = await this.prisma.player.findUnique({
       where: {
         facebookURL: dto.facebookURL,
@@ -26,16 +34,16 @@ export class PlayerService {
         image: dto.image,
         note: dto.note,
         addedBy: userId,
-        Game:{
-          create:{
-            iGN: dto.iGN,
-            type:dto.gameName,
-          }
-        }
+        iGN: dto.iGN,
+        fireKirin: dto.fireKirin,
+        orionStars: dto.orionStars,
+        gameVault: dto.gameVault,
+        pandaMaster: dto.pandaMaster,
+        ultraPanda: dto.ultraPanda,
+        vbLink: dto.vbLink,
+        milkyWay: dto.milkyWay,
+        juwa: dto.juwa,
       },
-      include:{
-        Game:true,
-      }
     });
     return player;
   }
@@ -43,8 +51,7 @@ export class PlayerService {
   async getAllPlayers() {
     return await this.prisma.player.findMany({
       include: {
-        Transaction: true,
-        Game:true,
+       Transaction:true,
       },
     });
   }
@@ -54,10 +61,9 @@ export class PlayerService {
       where: {
         id,
       },
-      include: {
-        Transaction: true,
-        Game:true,
-      },
+      include:{
+        Transaction:true,
+      }
     });
     if (!player) {
       throw new NotFoundException('Player not found!!!');
