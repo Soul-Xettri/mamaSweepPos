@@ -31,12 +31,19 @@ export class ShiftController {
     return this.shiftService.getCurrentShift(userId);
   }
 
-  @Post(':shiftId')
+  @Post('cashManagement/:shiftId/player/:playerId')
   cashInOut(
     @Param('shiftId') shiftId: string,
+    @Param('playerId') playerId: string,
     @GetCurrentUserId() userId: string,
-   @Body()dto:TransactionDTO
+    @Body() dto: TransactionDTO,
   ) {
-    return this.shiftService.cashInOut(userId, shiftId, dto);
+    return this.shiftService.cashInOut(userId, shiftId, playerId, dto);
   }
+
+  @Get('current/transactions')
+  getCurrentShiftTransactions(@GetCurrentUserId() userId: string) {
+    return this.shiftService.getCurrentShiftTransactions(userId);
+  }
+
 }

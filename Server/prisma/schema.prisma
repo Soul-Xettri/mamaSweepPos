@@ -60,6 +60,7 @@ model shift {
   Employee       user             @relation(fields: [employeeId], references: [id])
   employeeId     String
   CashManagement CashManagement[]
+  Transaction    Transaction[]
 
   @@index([employeeId])
 }
@@ -87,75 +88,75 @@ model CashManagement {
 }
 
 model FireKirin {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model OrionStars {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model GameVault {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model PandaMaster {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model UltraPanda {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model VbLink {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model MilkyWay {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model Juwa {
-  id             String           @id @default(uuid())
-  openingAmount  Int              @default(0)
-  closingAmount  Int              @default(0)
-  expectedAmount Int              @default(0)
-  CashManagement CashManagement[]
-  Transaction    Transaction[]
+  id              String           @id @default(uuid())
+  openingBalance  Int              @default(0)
+  closingBalance  Int              @default(0)
+  expectedBalance Int              @default(0)
+  CashManagement  CashManagement[]
+  Transaction     Transaction[]
 }
 
 model Transaction {
@@ -168,14 +169,14 @@ model Transaction {
   TransactionFor  GameType
   note            String?
   BillImage       BillImage[]
-  FireKirin       FireKirin?      @relation(fields: [fireKirinId], references: [id])
-  fireKirinId     String?
-  OrionStars      OrionStars?     @relation(fields: [orionStarsId], references: [id])
-  orionStarsId    String?
   Player          Player?         @relation(fields: [playerId], references: [id])
   playerId        String?
   createdBy       String?
   createdAt       DateTime        @default(now())
+  FireKirin       FireKirin?      @relation(fields: [fireKirinId], references: [id])
+  fireKirinId     String?
+  OrionStars      OrionStars?     @relation(fields: [orionStarsId], references: [id])
+  orionStarsId    String?
   GameVault       GameVault?      @relation(fields: [gameVaultId], references: [id])
   gameVaultId     String?
   PandaMaster     PandaMaster?    @relation(fields: [pandaMasterId], references: [id])
@@ -188,6 +189,8 @@ model Transaction {
   milkyWayId      String?
   Juwa            Juwa?           @relation(fields: [juwaId], references: [id])
   juwaId          String?
+  shiftId         String?
+  Shift           shift?          @relation(fields: [shiftId], references: [id])
 }
 
 model BillImage {
