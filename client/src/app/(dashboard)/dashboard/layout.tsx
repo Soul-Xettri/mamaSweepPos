@@ -1,14 +1,26 @@
-import { NavigationSidebar } from "@/components/dashboard/navigation/navigation-sidebar";
+import { Metadata } from "next"
+import Link from "next/link"
 
-const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Admin dashboard page",
+}
+
+interface ExamplesLayoutProps {
+  children: React.ReactNode
+}
+
+export default function ExamplesLayout({ children }: ExamplesLayoutProps) {
   return (
-    <div className="h-full">
-      <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
-        <NavigationSidebar />
+    <>
+      <div className="container relative">
+        <section>
+          <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow-md md:shadow-xl">
+            {children}
+          </div>
+        </section>
       </div>
-      <main className="md:pl-[72px] h-full">{children}</main>
-    </div>
-  );
-};
-
-export default MainLayout;
+    </>
+  )
+}

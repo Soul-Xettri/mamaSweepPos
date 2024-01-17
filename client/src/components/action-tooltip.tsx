@@ -8,7 +8,7 @@ import {
 } from "./ui/tooltip";
 
 interface ActionToolTipProps {
-  label: string;
+  label?: string;
   children: React.ReactNode;
   side?: "top" | "bottom" | "left" | "right";
   align?: "start" | "center" | "end";
@@ -27,7 +27,7 @@ export const ActionToolTip = ({
           <TooltipTrigger asChild>{children}</TooltipTrigger>
           <TooltipContent side={side} align={align}>
             <p className="font-semibold text-sm capitalize">
-              {label.toLowerCase()}
+              {label?.toLowerCase()}
             </p>
           </TooltipContent>
         </Tooltip>
