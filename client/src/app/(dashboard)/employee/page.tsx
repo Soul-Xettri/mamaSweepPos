@@ -38,7 +38,7 @@ export default function Employees() {
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Employees</h2>
           </div>
-          <div className="hidden items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-4">
+          <div className="hidden items-start justify-center gap-6 rounded-lg  md:grid lg:grid-cols-2 xl:grid-cols-4">
             <div className="col-span-2 grid items-start gap-6 lg:col-span-1">
               <Card>
                 <CardHeader className="items-center relative">
@@ -65,7 +65,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
@@ -110,7 +110,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
@@ -155,7 +155,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
@@ -200,7 +200,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
@@ -245,7 +245,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
@@ -290,7 +290,7 @@ export default function Employees() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     </div>
-                  <Avatar className="w-[150px] h-[150]">
+                  <Avatar className="w-[150px] h-[150px]">
                     <AvatarImage src="/ms.jpg" alt="Avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
