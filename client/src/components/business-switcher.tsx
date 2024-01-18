@@ -1,19 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   CaretSortIcon,
   CheckIcon,
   PlusCircledIcon,
-} from "@radix-ui/react-icons"
+} from "@radix-ui/react-icons";
 
-import { cn } from "@/lib/utils"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -22,7 +18,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -31,112 +27,116 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 const groups = [
   {
-    label: "Personal Account",
-    teams: [
+    label: "Current Business",
+    business: [
       {
-        label: "Alicia Koch",
-        value: "personal",
+        avatar: "/ms.jpg",
+        label: "Mama Sweeps",
+        value: "business1",
       },
     ],
   },
   {
-    label: "Teams",
-    teams: [
+    label: "Other Business",
+    business: [
       {
-        label: "Acme Inc.",
-        value: "acme-inc",
-      },
-      {
-        label: "Monsters Inc.",
-        value: "monsters",
+        avatar: "/tg.jpg",
+        label: "Titanium Gaming ",
+        value: "business2",
       },
     ],
   },
-]
+];
 
-type Team = (typeof groups)[number]["teams"][number]
+type business = (typeof groups)[number]["business"][number];
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<
+  typeof PopoverTrigger
+>;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface BusinessSwitcherProps extends PopoverTriggerProps {}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
-  const [open, setOpen] = React.useState(false)
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false)
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-    groups[0].teams[0]
-  )
+export default function BusinessSwitcher({ className }: BusinessSwitcherProps) {
+  const [open, setOpen] = React.useState(false);
+  const [showNewBusinessDialog, setShowNewBusinessDialog] =
+    React.useState(false);
+  const [selectedBusiness, setSelectedBusiness] = React.useState<business>(
+    groups[0].business[0]
+  );
 
   return (
-    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+    <Dialog
+      open={showNewBusinessDialog}
+      onOpenChange={setShowNewBusinessDialog}
+    >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-label="Select a team"
+            aria-label="Select a business"
             className={cn("w-[200px] justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
-                src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
-                alt={selectedTeam.label}
-                className="grayscale"
+                src={selectedBusiness.avatar}
+                alt={selectedBusiness.label}
+                className="dark:grayscale"
               />
-              <AvatarFallback>SC</AvatarFallback>
+              <AvatarFallback>MS</AvatarFallback>
             </Avatar>
-            {selectedTeam.label}
+            {selectedBusiness.label}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
             <CommandList>
-              <CommandInput placeholder="Search team..." />
-              <CommandEmpty>No team found.</CommandEmpty>
+              <CommandInput placeholder="Search business..." />
+              <CommandEmpty>No business found.</CommandEmpty>
               {groups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
-                  {group.teams.map((team) => (
+                  {group.business.map((business) => (
                     <CommandItem
-                      key={team.value}
+                      key={business.value}
                       onSelect={() => {
-                        setSelectedTeam(team)
-                        setOpen(false)
+                        setSelectedBusiness(business);
+                        setOpen(false);
                       }}
                       className="text-sm"
                     >
                       <Avatar className="mr-2 h-5 w-5">
                         <AvatarImage
-                          src={`https://avatar.vercel.sh/${team.value}.png`}
-                          alt={team.label}
-                          className="grayscale"
+                          src={business.avatar}
+                          alt={business.label}
+                          className="dark:grayscale"
                         />
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>
-                      {team.label}
+                      {business.label}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedTeam.value === team.value
+                          selectedBusiness.value === business.value
                             ? "opacity-100"
                             : "opacity-0"
                         )}
@@ -152,12 +152,12 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                 <DialogTrigger asChild>
                   <CommandItem
                     onSelect={() => {
-                      setOpen(false)
-                      setShowNewTeamDialog(true)
+                      setOpen(false);
+                      setShowNewBusinessDialog(true);
                     }}
                   >
                     <PlusCircledIcon className="mr-2 h-5 w-5" />
-                    Create Team
+                    Create business
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
@@ -167,15 +167,15 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
       </Popover>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create team</DialogTitle>
+          <DialogTitle>Create business</DialogTitle>
           <DialogDescription>
-            Add a new team to manage products and customers.
+            Add a new business to manage products and customers.
           </DialogDescription>
         </DialogHeader>
         <div>
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Team name</Label>
+              <Label htmlFor="name">Business name</Label>
               <Input id="name" placeholder="Acme Inc." />
             </div>
             <div className="space-y-2">
@@ -203,12 +203,15 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setShowNewTeamDialog(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setShowNewBusinessDialog(false)}
+          >
             Cancel
           </Button>
           <Button type="submit">Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
