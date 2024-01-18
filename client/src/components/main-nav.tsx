@@ -12,7 +12,7 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/dashboard"
+        href="/overview"
         className="text-sm font-medium transition-colors hover:text-primary"
       >
         Overview
@@ -24,25 +24,25 @@ export function MainNav({
         Employees
       </Link>
       <Link
-        href="/dashboard"
+        href="/overview"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Players
       </Link>
       <Link
-        href="/dashboard"
+        href="/overview"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Games
       </Link>
       <Link
-        href="/dashboard"
+        href="/overview"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Shifts
       </Link>
       <Link
-        href="/dashboard"
+        href="/overview"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings
