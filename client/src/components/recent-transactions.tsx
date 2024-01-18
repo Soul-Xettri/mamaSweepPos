@@ -4,7 +4,7 @@ import {
     AvatarImage,
   } from "@/components/ui/avatar"
   
-  export function RecentSales() {
+  export function RecentTransactions() {
     return (
       <div className="space-y-8">
         <div className="flex items-center">

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RecentSales } from "../recent-sales";
+import { RecentTransactions } from "../recent-transactions";
 import { Overview } from "../overview";
 
 export const Stats = () => {
@@ -27,7 +27,7 @@ export const Stats = () => {
           <CardDescription>You made 265 transactions this month.</CardDescription>
         </CardHeader>
         <CardContent>
-          <RecentSales />
+          <RecentTransactions />
         </CardContent>
       </Card>
     </div>
