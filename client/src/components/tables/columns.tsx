@@ -23,7 +23,7 @@ export type Player = {
   facebookUrl: string;
 };
 
-export const columns: ColumnDef<Player>[] = [
+export const playerColumns: ColumnDef<Player>[] = [
   {
     id: "select",
     header: ({ table }) => (
