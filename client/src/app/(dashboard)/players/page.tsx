@@ -5,7 +5,7 @@ import { Search } from "@/components/search";
 import BusinessSwitcher from "@/components/business-switcher";
 import { UserNav } from "@/components/user-nav";
 import { ModeToggle } from "@/components/mode-toggle";
-import { Player, columns } from "@/components/tables/columns";
+import { Player, playerColumns } from "@/components/tables/columns";
 import { DataTable } from "@/components/tables/data-table";
 
 async function getData(): Promise<Player[]> {
@@ -109,7 +109,7 @@ export default async function Employees() {
             <h2 className="text-3xl font-bold tracking-tight">Players</h2>
           </div>
           <div className="items-start justify-center gap-6 rounded-lg">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={playerColumns} data={data} />
           </div>
         </div>
       </div>
